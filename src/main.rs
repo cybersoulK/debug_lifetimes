@@ -1,3 +1,5 @@
+use hecs::Entity;
+
 
 
 struct Component;
@@ -37,11 +39,21 @@ pub type InstancesView<'a, 'b> = hecs::View<'a, (&'b Component,)>;
 fn main() {
 
     let world = hecs::World::new();
+
+
+    //this works
+    {
+        let mut query1: InstancesQuery = world.query();
+        let view_1 = query1.view();
+
+        let _ = view_1.get(Entity::DANGLING);
+    }
     
+    //this doesn't
     {
         let mut ecs_queries = ECSQueries::new(&world);
-        {
-            let ecs_views = ECSViews::new(&mut ecs_queries);
-        }
+        let ecs_views = ECSViews::new(&mut ecs_queries);
+        
+        let _ = ecs_views.view1.get(Entity::DANGLING);
     }
 }
