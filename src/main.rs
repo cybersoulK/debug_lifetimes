@@ -44,7 +44,7 @@ fn main() {
     //this works
     {
         let mut query1: InstancesQuery = world.query();
-        let view_1 = query1.view();
+        let view_1: InstancesView = query1.view();
 
         let _ = view_1.get(Entity::DANGLING);
     }
