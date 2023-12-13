@@ -5,11 +5,11 @@ use hecs::Entity;
 struct Component;
 
 
-pub struct ECSQueries<'a, 'b> {
-    query1: InstancesQuery<'a, 'b>,
+pub struct ECSQueries<'a, 'c> {
+    query1: InstancesQuery<'a, 'c>,
 }
 
-impl<'a, 'b, 'c: 'a> ECSQueries<'a, 'b> {
+impl<'a, 'c: 'a> ECSQueries<'a, 'c> {
     pub fn new(world: &'c hecs::World) -> Self {
 
         Self {
@@ -18,12 +18,12 @@ impl<'a, 'b, 'c: 'a> ECSQueries<'a, 'b> {
     }
 }
 
-pub struct ECSViews<'a, 'b> {
-    view1: InstancesView<'a, 'b>,
+pub struct ECSViews<'b, 'c> {
+    view1: InstancesView<'b, 'c>,
 }
 
-impl<'a, 'b: 'a, 'c: 'a> ECSViews<'a, 'b> {
-    pub fn new(queries: &'c mut ECSQueries<'a, 'b>) -> Self {
+impl<'a, 'b, 'c> ECSViews<'b, 'c> {
+    pub fn new(queries: &'b mut ECSQueries<'a, 'c>) -> Self {
 
         Self {
             view1: queries.query1.view(),
@@ -32,8 +32,8 @@ impl<'a, 'b: 'a, 'c: 'a> ECSViews<'a, 'b> {
 }
 
 
-pub type InstancesQuery<'a, 'b> = hecs::QueryBorrow<'a, (&'b Component,)>;
-pub type InstancesView<'a, 'b> = hecs::View<'a, (&'b Component,)>;
+type InstancesQuery<'a, 'c> = hecs::QueryBorrow<'a, (&'c Component,)>;
+type InstancesView<'b, 'c> = hecs::View<'b, (&'c Component,)>;
 
 
 fn main() {
